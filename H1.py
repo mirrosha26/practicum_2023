@@ -4,20 +4,18 @@ from math import sin, cos, pi
 width = 600
 height = 600
 root = tk.Tk()
-# Основной канвас
 c = tk.Canvas(root, width=width, heigh=height)
 points_list = []
 
 
 def drawer(canvas, x, y, a, b):
-
     x = a + x
     y = b + y
 
     x1, y1 = (x - 1), (y - 1)
     x2, y2 = (x + 1), (y + 1)
 
-    point = canvas.create_oval(x1, y1, x2, y2, fill="white", outline="white")
+    point = canvas.create_oval(x1, y1, x2, y2, fill="#f6f6f6", outline="#f6f6f6")
 
     points_list.append(point)
 
@@ -54,7 +52,6 @@ def scale_processing(number):
         for point in points_list:
             c.delete(point)
 
-    # Отрисовываем эллипс
     processing(c, float(number))
 
 
@@ -62,7 +59,7 @@ def main():
 
     root.title("Суперэллипс")
 
-    c.configure(bg="black")
+    c.configure(bg="#0a95ff")
     c.pack(fill=tk.BOTH, expand=1)
 
     scale = tk.Scale(

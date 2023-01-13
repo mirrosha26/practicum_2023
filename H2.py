@@ -4,7 +4,7 @@ import time
 gravity = 0.3
 resistance = 0.005
 
-WIDTH = 800
+WIDTH = 300
 HEIGHT = 800
 
 
@@ -20,7 +20,7 @@ class Ball:
         self.energy_x = 2
         self.energy_y = 1
         self.ball = canvas.create_oval(self.x - size, self.y - size, self.x + size, self.y + size,
-                                       fill='gray', outline='white', width=1.5)
+                                       fill='#FBDDEC', outline='#EF7AB5', width=1.5)
 
     def move(self):
         self.gravity_down()
@@ -67,8 +67,8 @@ class Ball:
 
 def main():
     window = tk.Tk()
-    window.title('Elastic collision')
-    canvas = tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='black')
+    window.title('Упругое столкновение')
+    canvas = tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='#FFFFFF')
     canvas.pack()
     x, y = WIDTH // 2, HEIGHT // 2
     ball = Ball(canvas, x, y, 25)

@@ -1,30 +1,29 @@
-#импортируем trkinter и рандом
 from tkinter import Tk, Canvas
 import random
 
-# задаем параметры окна Globals
+# окно
 WIDTH = 800
 HEIGHT = 500
 SEG_SIZE = 20
 IN_GAME = True
 
 
-# Создание шарика
+# цель
 def create_block():
         global BLOCK
         posx = SEG_SIZE * random.randint(1, (WIDTH-SEG_SIZE) / SEG_SIZE)
         posy = SEG_SIZE * random.randint(1, (HEIGHT-SEG_SIZE) / SEG_SIZE)
-        BLOCK = c.create_oval(posx, posy,
+        BLOCK = c.create_rectangle(posx, posy,
                           posx+SEG_SIZE, posy+SEG_SIZE,
-                          fill="orange")
+                          fill="#E72929")
 
-#Создание логики игры
 def main():
     global IN_GAME
     if IN_GAME:
         s.move()
         head_coords = c.coords(s.segments[-1].instance)
         x1, y1, x2, y2 = head_coords
+
         # столкновение с полями
         if x2 > WIDTH or x1 < 0 or y1 < 0 or y2 > HEIGHT:
             IN_GAME = False
@@ -39,7 +38,6 @@ def main():
                 if head_coords == c.coords(s.segments[index].instance):
                     IN_GAME = False
         root.after(100, main)
-    # Not IN_GAME -> stop game and print message
     else:
         set_state(restart_text, 'normal')
         set_state(game_over_text, 'normal')
@@ -49,16 +47,14 @@ class Segment(object):
     def __init__(self, x, y):
         self.instance = c.create_rectangle(x, y,
                                            x+SEG_SIZE, y+SEG_SIZE,
-                                           fill="white")
+                                           fill="#29E75E")
 
 #создание змеи
 class Snake(object):
     def __init__(self, segments):
         self.segments = segments
-        # возможные движения
         self.mapping = {"Down": (0, 1), "Right": (1, 0),
                         "Up": (0, -1), "Left": (-1, 0)}
-        # начальное направление движения
         self.vector = self.mapping["Right"]
 
     def move(self):
@@ -74,14 +70,12 @@ class Snake(object):
                  x2+self.vector[0]*SEG_SIZE, y2+self.vector[1]*SEG_SIZE)
 
     def add_segment(self):
-        #добавление сегмета змеи
         last_seg = c.coords(self.segments[0].instance)
         x = last_seg[2] - SEG_SIZE
         y = last_seg[3] - SEG_SIZE
         self.segments.insert(0, Segment(x, y))
 
     def change_direction(self, event):
-        #смена направления движения
         if event.keysym in self.mapping:
             self.vector = self.mapping[event.keysym]
 
@@ -108,35 +102,31 @@ def start_game():
     global s
     create_block()
     s = create_snake()
-    # реакция на нажатие клавиатуры
     c.bind("<KeyPress>", s.change_direction)
     main()
 
 
 def create_snake():
-    # создание сегмента змеи
     segments = [Segment(SEG_SIZE, SEG_SIZE),
                 Segment(SEG_SIZE*2, SEG_SIZE),
                 Segment(SEG_SIZE*3, SEG_SIZE)]
     return Snake(segments)
 
 
-# Настройка окна
 root = Tk()
-root.title("PythonicWay Snake")
+root.title("ЗМЕЙКА 🐍")
 
 
-c = Canvas(root, width=WIDTH, height=HEIGHT, bg="#DCDCDC")
+c = Canvas(root, width=WIDTH, height=HEIGHT, bg="black")
 c.grid()
-# считывание нажатий клавиатуры
 c.focus_set()
-game_over_text = c.create_text(WIDTH/2, HEIGHT/2, text="GAME OVER!",
-                               font='Arial 20', fill='red',
+game_over_text = c.create_text(WIDTH/2, HEIGHT/2, text="ЗМЕЙКА, ИГРА ОКОНЧЕНА!",
+                               font='Arial 30', fill='#E72929',
                                state='hidden')
 restart_text = c.create_text(WIDTH/2, HEIGHT-HEIGHT/3,
-                             font='Arial 30',
+                             font='Arial 60',
                              fill='white',
-                             text="Click here to restart",
+                             text="▶",
                              state='hidden')
 c.tag_bind(restart_text, "<Button-1>", clicked)
 start_game()
